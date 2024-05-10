@@ -1,0 +1,55 @@
+# PowerPeg: A Powerful Parser with the Best of Both Worlds
+
+PowerPeg is an open-source JavaScript library that provides a versatile and efficient parser capable of handling a wide range of grammars. Combining the flexibility of Parsing Expression Grammar (PEG) with the efficiency of regular expressions, PowerPeg offers a unique solution for parsing complex data formats.
+
+## Main Features
+
+1. **Hybrid Parsing:** PowerPeg utilizes a hybrid approach, incorporating elements of both PEG and regular expression parsing techniques. This allows for greater flexibility in defining grammars while maintaining the performance benefits of regular expressions.
+
+2. **Grammar Loading:** With PowerPeg, you can easily load and define grammars using a simple and intuitive syntax. The library automatically converts PEG-style grammar definitions into regular expressions, streamlining the parsing process.
+
+3. **Versatility:** PowerPeg supports a wide range of grammatical constructs, including objects, arrays, strings, numbers, booleans, and null values. Whether you're parsing JSON data, configuration files, or custom data formats, PowerPeg can handle it all with ease.
+
+4. **Modular Design:** The PowerPeg library is designed with modularity and extensibility in mind. You can easily extend or customize the parser to suit your specific parsing needs.
+
+## Getting Started
+
+To use PowerPeg in your JavaScript projects, simply include the `powerpeg.js` file in your project directory and import it into your JavaScript files using the `import` or `require` statement.
+
+```javascript
+import Parser from 'powerpeg';
+```
+
+## Example Usage
+
+```javascript
+const JSONGrammar = {
+  start: "{ value }",
+  value: "object|array|string|number|boolean|null",
+  object: "{ (pair (, pair)*)? }",
+  pair: "string : value",
+  array: "\\[ (value (, value)*)? \\]",
+  string: "' [^']* ' | \" [^\"]* \"",
+  number: "-?(0|[1-9][0-9]*)(\\.[0-9]+)?([eE][+-]?[0-9]+)?",
+  boolean: "true|false",
+  null: "null",
+};
+
+const jsonParser = new Parser(JSON.stringify(JSONGrammar));
+const jsonString = '{"name": "John", "age": 30, "isAdmin": true}';
+console.log(jsonParser.match(jsonString));
+```
+
+## Contributing
+
+We welcome contributions from the community to improve and expand PowerPeg. If you have ideas for new features, bug fixes, or enhancements, please feel free to submit a pull request or open an issue on our GitHub repository.
+
+## License
+
+PowerPeg is released under the MIT License. You are free to use, modify, and distribute the library for both commercial and non-commercial purposes.
+
+## Acknowledgments
+
+This project was inspired by the need for a versatile and efficient parser capable of handling complex grammars in JavaScript. We would like to thank the open-source community for their contributions and support.
+
+For more information and detailed documentation, please visit the PowerPeg GitHub repository: [https://github.com/your-username/powerpeg](https://github.com/your-username/powerpeg)

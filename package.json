@@ -1,0 +1,27 @@
+{
+  "name": "powerpeg",
+  "version": "1.0.0",
+  "description": "A powerful JavaScript parser library that combines Parsing Expression Grammar (PEG) and regular expressions for versatile parsing of complex data formats.",
+  "main": "powerpeg.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/andersoncarli/powerpeg.git"
+  },
+  "keywords": [
+    "parser",
+    "parsing",
+    "grammar",
+    "PEG",
+    "regular expression",
+    "JavaScript"
+  ],
+  "author": "Anderson Carli",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andersoncarli/powerpeg/issues"
+  },
+  "homepage": "https://github.com/andersoncarli/powerpeg#readme"
+}
