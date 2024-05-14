@@ -1,0 +1,61 @@
+comment : '//'[^\n]* | '/*'.*'*/' | '#'[^\n]*
+
+start  : statements EOF
+
+statements : statement+,
+statement : "production | assignment | expression",
+
+production: ^identifier ':' (rule | \\ | \n)*
+  identifier : (letter|[@$_])(letter|[@$_]|digit)*
+  rule: choice | sequence | primary modifier?
+  primary: identifier | string | range | group | charset | not | symbol
+  choice: primary ( '|' primary )*
+  sequence: primary primary*
+  group: '(' rule ')'
+  charset: '[' .*? ']'
+  range: string '..' string
+  not: '!' primary
+  modifier: /[?*+]/
+
+digit      : [0-9]
+letter     : [a-zA-Z]
+
+space      : \s
+tab        : \t
+return    :  \r
+newline    : \n return?
+
+values     : value (, value)*
+
+value      : object | array | function | call | params | tuple | type | scalar | block | identifier | null
+null       : 'null'
+expression : value | math_expression | keyvalue | return | '(' expression ')',
+
+key        : identifier | string | '[' expression ']'
+assignment : key '=' value
+
+type   : production
+tuples : tuple+
+tuple  : (key | value) \: (key | value)
+
+object   : '<' values? '>'
+array    : '[' values? ']'
+params   : '(' values? ')'
+block    : { values? | statements? }
+blocks   : block+
+function : params? block
+call     : ( block | identifier) params
+
+stringD : /"(\\. | [^"])*"/ # double quoted "
+stringS : /'(\\. | [^'])*'/ # single quoted '
+stringT : /`(\\. | [^`])*`/ # back ticks // todo: add { scape for inside blocks
+stringR : '/(\\. | [^/])*/' # regular expr
+string  : stringD | stringS | stringT | stringR
+
+number  : [+-]?\d+\.\d+(?:e[+-]\d+)?
+boolean : true | false
+scalar  : number | string | boolean
+math_expression : "unary value ( operator value)*",
+operator : [+-*/%!<>|&^] | '==' | '!=' | '<=' | '>=' | '>=' | '>=' | '||' | '&&'
+literal : .
+EOF : !.

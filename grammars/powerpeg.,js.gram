@@ -1,0 +1,41 @@
+#{ type: 'comment', value: { until(13) } }
+# after defined comment we already can use comments in the grammar.
+# powerpeg has a single pre defined rules, terminal and nonow we define then
+\{ type: 'char.escape',         value: { source[++pos] } }
+ { type: 'char.ws.space',       value: " ", char: 32 }
+.{ type: 'char.any',            value: { source[pos++] } }
+
+^{ type: 'control.start',       value: { pos == 0 } }
+${ type: 'control.end',         value: { !source[pos] } }
+
+?{ type: "quantifier.zeroOne",  greed: {!match('?')} }
+*{ type: "quantifier.zeroPlus", greed: {!match('?')} }
++{ type: "quantifier.onePlus",  greed: {!match('?')} }
+
+'{ type: "string.single",       value: { until("'")).split(1,-1) } }
+"{ type: 'string.double',       value: { until('"')).split(1,-1) } }
+
+[{ type: "charset",             value: { match('^? char-char|char +', '] }')
+({ type: "group",               value: { match("choice|list \)") } }
+{{ type: "code",                value: { until("}") } }
+
+\\s : { type: 'char.ws.space',    char: 32 }
+\\t : { type: 'char.ws.tab',      char:  9 }
+\\r : { type: 'char.ws.return',   char: 10 }
+\\n : { type: 'char.ws.newline',  char: 13 }
+
+ws       : (\\s | \\t | \\n \\r?)+
+start    : ^ rule+ $ : { }
+rule     : term code? ;|\n
+list     : term (, term)+
+choice   : term (| term)+
+term     : group|type|tuple|terminal quantifier?
+type     : name tuple
+tuple    : (\: term)+
+terminal : name | string | charset | literal
+digit    : [0-9]
+letter   : [a-zA-Z_.]
+name     : (letter | digit)+
+tag      : name | string
+literal  : .* { .* }
+
